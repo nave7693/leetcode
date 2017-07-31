@@ -20,3 +20,21 @@ public:
         }
     }
 };
+
+// 7/29
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int n = nums.size();
+        if (n == 0) { return 0; }
+        if (n == 1) { return nums[0]; }
+        
+        vector<int> rob(n+1, 0);
+        rob[0] = 0;
+        rob[1] = nums[0];
+        for (int i = 2; i <=n; i++) {
+            rob[i] = max(rob[i-1], rob[i-2] + nums[i-1]);
+        }
+        return rob[n];
+    }
+};
