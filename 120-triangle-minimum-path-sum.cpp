@@ -22,3 +22,22 @@ public:
         return result;
     }
 };
+
+// 7/29
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        if (n == 0) return 0;
+        
+        // dp[i] = minimum path sum for the current row at position i
+        vector<int> dp(n+1, 0);
+        
+        for (int i = n; i > 0; i--) {
+            for (int j = 0; j < i; j++) {
+                dp[j] = min(dp[j], dp[j+1]) + triangle[i-1][j];
+            }
+        }
+        return dp[0];
+    }
+};
