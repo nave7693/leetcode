@@ -1,5 +1,6 @@
 // https://leetcode.com/problems/longest-increasing-subsequence
 
+// normal DP, O(n^2)
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
@@ -20,3 +21,16 @@ public:
         return maxCount;
     }
 };
+
+// 08/20/2017 when the number is greater than everything in res, insert, otherwise find the position
+// where the number is just greater than all previous numbers and replace the original number there
+// Uses binary search to find the position fast
+int lengthOfLIS(vector<int>& nums) {
+    vector<int> res;
+    for(int i=0; i<nums.size(); i++) {
+        auto it = std::lower_bound(res.begin(), res.end(), nums[i]);
+        if(it==res.end()) res.push_back(nums[i]);
+        else *it = nums[i];
+    }
+    return res.size();
+}
