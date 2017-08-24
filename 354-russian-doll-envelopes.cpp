@@ -27,3 +27,41 @@ public:
         return result;
     }
 };
+
+// 08/20/2017 using binarysearch to solve for Longest Increaseing Subsequence of heights on envelopes sorted on ascending widths
+class Solution {
+private:
+    // find the index of the first number in nums that is no less than target
+    int binarySearch(vector<int>& nums, int target) {
+        if (nums.size() == 0) return -1;
+        int left = 0, right = nums.size() - 1;
+        int mid;
+        while (left <= right) {
+            mid = left + (right - left) / 2;
+            if (target == nums[mid]) {
+                return mid;
+            } else if (target < nums[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+public:
+    int maxEnvelopes(vector<pair<int, int>>& envelopes) {
+        sort(envelopes.begin(), envelopes.end(), [](pair<int, int> a, pair<int, int> b) {
+            return (a.first < b.first) || (a.first == b.first && a.second > b.second);
+        });
+        vector<int> LIS;
+        for (int i = 0; i < envelopes.size(); i++) {
+            int index = binarySearch(LIS, envelopes[i].second);
+            if (index == -1 or index == LIS.size()) {
+                LIS.push_back(envelopes[i].second);
+            } else {
+                LIS[index] = envelopes[i].second;
+            }
+        }
+        return LIS.size();
+    }
+};
